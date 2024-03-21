@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+#Extract sequence from FASTQ file
+def get_seq(filename):
+        sequence=' '
+        with open(filename, 'r')as f:
+                for line in f:
+                        if line[0]=='A' or line[0]=='T' or line[0]=='C' or line[0]=='G':
+                                sequence+=line
+        return sequence
+
+f=open('filename','w')
+print(get_seq('filename'),file=f)
+
+#Analysis using ASCII characters
+
+def ASCII_align(filename):
+        sequences=[]
+        scores=[]
+        with open(filename, 'r') as a:
+                while True:
+                        a.readline()
+                        seq=a.readline().rstrip()
+                        a.readline()
+                        score=a.readline().rstrip()
+                        if len(seq) ==0:
+                                break
+                        sequences.append(seq)
+                        scores.append(score)
+        return sequences, scores
+sequences, scores=ASCII_align('filename') #Actually the file path that is needed
+print(sequences[:5],file=f)
+print(scores[:5],file=f)
+
+#Get the phred score from each ASCII character
+def phred_score(score):
+        phred=ord(score)-33
+        return phred
+p=open('filename','w')
+phred=[]
+scores=scores[0]
+sequences=sequences[0]
+for line in scores:
+        for char in line:
+                phred.append(phred_score(char))
+print(phred)
+print(sequences[0])
+print(scores)
+print(len(phred))
